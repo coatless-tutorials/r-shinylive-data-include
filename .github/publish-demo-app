@@ -3,7 +3,7 @@ on:
     branches: [main, master]
   release:
       types: [published]
-  workflow_dispatch:
+  workflow_dispatch: {}
     
 name: demo-quarto-app
 
