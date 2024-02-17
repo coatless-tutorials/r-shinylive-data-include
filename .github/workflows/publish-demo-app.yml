@@ -47,7 +47,7 @@ jobs:
       - name: "Install quarto extension for shinylive"
         shell: bash
         run: |
-          quarto add quarto-ext/shinylive
+          quarto add --no-prompt quarto-ext/shinylive
 
       # Render the Quarto file
       - name: "Render working directory"
