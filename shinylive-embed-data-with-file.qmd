@@ -1,0 +1,42 @@
+---
+title: "File attribute shinylive-r"
+format:
+  html:
+    resources: 
+      - shinylive-sw.js
+filters:
+  - shinylive
+---
+
+```{shinylive-r}
+#| standalone: true
+#| components: [editor, viewer]
+#| layout: vertical
+#| viewerHeight: 400
+## file: app.R
+library(shiny)
+
+ui <- fluidPage(
+  titlePanel("Hello Shiny!"),
+  verbatimTextOutput(outputId = "dataVariables")
+)
+
+server <- function(input, output) {
+
+  output$dataVariables <- renderPrint({
+      ds <- read.csv("fruit.csv")
+      ds
+  })
+
+}
+
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)
+
+## file: fruit.csv
+id,name,count
+1,"apple",20
+2,"orange",12
+3,"grape",100
+```
+
