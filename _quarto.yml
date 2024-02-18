@@ -1,2 +1,3 @@
 project:
   title: "R-shinylive-embed-data-with-file"
+  output-dir: _site
