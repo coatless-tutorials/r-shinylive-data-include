@@ -1,5 +1,5 @@
 ---
-title: "Embed file next to R shinylive app"
+title: "Use Data by Downloading it into the R Shinylive App"
 format:
   html:
     resources: 
@@ -27,22 +27,15 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  current_url <- function() {
-    paste0(
-      session$clientData$url_protocol, "//",
-      session$clientData$url_hostname, ":",
-      session$clientData$url_port, 
-      session$clientData$url_pathname
-    )
-  }
+  data_url <- "https://https://tutorials.thecoatlessprofessor.com/r-shinylive-data-include/fruit-data.csv"
   
   output$urlText <- renderText({
-    paste0(current_url(), "Hi!")
+    data_url
   })
   
-  output$retrievedData <- renderText({ 
-    "hi"
-    #read.csv(paste0(current_url(), "fruit-data.csv"))
+  output$retrievedData <- renderText({
+    download.file(data_url, "fruit-data.csv")
+    read.csv("fruit-data.csv")
   })
   
 }

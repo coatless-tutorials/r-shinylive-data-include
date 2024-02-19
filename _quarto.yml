@@ -1,3 +1,31 @@
 project:
-  title: "R-shinylive-embed-data-with-file"
+  type: website
   output-dir: _site
+
+website:
+  title: "Data inclusion in a shinylive app"
+  search: true
+  reader-mode: true
+  sidebar:
+    style: "floating"
+    contents:
+      - href: index.qmd
+        text: Home
+      - href: include-file.qmd
+        text: File Embed in App
+      - href: include-download-from-url.qmd
+        text: Download file into App
+
+  page-footer: 
+    left: "Data in shinylive apps"
+    right: 
+      - icon: github
+        href: https://github.com/coatless-tutorials/r-shinylive-data-include
+
+# Set the language that should be used for Quarto websites
+# https://github.com/quarto-dev/quarto-cli/tree/main/src/resources/language
+# lang: en
+
+# Attach shinylive to every page
+filters:
+  - shinylive

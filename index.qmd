@@ -8,35 +8,12 @@ filters:
   - shinylive
 ---
 
-```{shinylive-r}
-#| standalone: true
-#| components: [editor, viewer]
-#| layout: vertical
-#| viewerHeight: 400
-## file: app.R
-library(shiny)
+How can I include data in an `{r-shinylive}` app? There are two approaches:
 
-ui <- fluidPage(
-  titlePanel("Hello Shiny!"),
-  verbatimTextOutput(outputId = "dataVariables")
-)
+1. Embed the text file contents inside the editor
+2. Download the data from an HTTPS
 
-server <- function(input, output) {
-
-  output$dataVariables <- renderPrint({
-      ds <- read.csv("fruit.csv")
-      ds
-  })
-
-}
-
-# Create Shiny app ----
-shinyApp(ui = ui, server = server)
-
-## file: fruit.csv
-id,name,count
-1,"apple",20
-2,"orange",12
-3,"grape",100
-```
+::: callout-important
+There is no way to use a relative URL or a non-HTTPS URL.
+:::
 
