@@ -1,0 +1,53 @@
+---
+title: "Embed file next to R shinylive app"
+format:
+  html:
+    resources: 
+      - shinylive-sw.js
+      - fruit-data.csv
+filters:
+  - shinylive
+---
+
+```{shinylive-r}
+#| standalone: true
+#| components: [editor, viewer]
+#| layout: vertical
+#| viewerHeight: 400
+## file: app.R
+library(shiny)
+
+ui <- fluidPage(
+  titlePanel("Hello Shiny!"),
+  h3("Relative URL"),
+  verbatimTextOutput("urlText"),
+  h3("Downloaded Data by Relative URL"),
+  verbatimTextOutput("retrievedData")
+)
+
+server <- function(input, output, session) {
+  
+  current_url <- function() {
+    paste0(
+      session$clientData$url_protocol, "//",
+      session$clientData$url_hostname, ":",
+      session$clientData$url_port, 
+      session$clientData$url_pathname
+    )
+  }
+  
+  output$urlText <- renderText({
+    paste0(current_url(), "Hi!")
+  })
+  
+  output$retrievedData <- renderText({ 
+    "hi"
+    #read.csv(paste0(current_url(), "fruit-data.csv"))
+  })
+  
+}
+
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)
+```
+
