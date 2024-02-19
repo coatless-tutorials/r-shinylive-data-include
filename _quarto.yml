@@ -15,6 +15,7 @@ website:
         text: File Embed in App
       - href: include-download-from-url.qmd
         text: Download file into App
+      - text: Web Data
 
   page-footer: 
     left: "Data in shinylive apps"
