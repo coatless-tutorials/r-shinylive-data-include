@@ -1,5 +1,5 @@
 ---
-title: "File attribute shinylive-r"
+title: "Data in an R-shinylive App"
 format:
   html:
     resources: 
