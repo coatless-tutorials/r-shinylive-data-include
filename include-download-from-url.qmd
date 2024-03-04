@@ -9,10 +9,12 @@ filters:
   - shinylive
 ---
 
+This example demonstrates how we can retrieve and load data from a URL into the R Shinylive app.
+
+## Example App
+
 ```{shinylive-r}
 #| standalone: true
-#| components: [editor, viewer]
-#| layout: vertical
 #| viewerHeight: 400
 ## file: app.R
 library(shiny)
@@ -27,7 +29,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  data_url <- "https://https://tutorials.thecoatlessprofessor.com/r-shinylive-data-include/fruit-data.csv"
+  data_url <- "https://tutorials.thecoatlessprofessor.com/r-shinylive-data-include/fruit-data.csv"
   
   output$urlText <- renderText({
     data_url
@@ -44,3 +46,95 @@ server <- function(input, output, session) {
 shinyApp(ui = ui, server = server)
 ```
 
+Interested in knowing more? Read on!
+
+## Specifying data
+
+When publishing an R Shinylive application through Quarto, include the `resources` key in the document header with `shinylive-sw.js` and the data file name (e.g., `fruit-data.csv`).
+
+```md
+---
+title: "Your Quarto Page Title"
+format:
+  html:
+    resources: 
+      - shinylive-sw.js  # Required to publish the shinylive service worker
+      - fruit-data.csv   # Required to make sure the data is uploaded alongside the application
+filters:
+  - shinylive
+---
+```
+
+## Data Location
+
+Ensure where the data is found can be accessed using the `HTTPS` protocol. For example, we'll use the data at:
+
+```default
+https://tutorials.thecoatlessprofessor.com/r-shinylive-data-include/fruit-data.csv
+```
+
+:::callout-note
+This website is being hosted from GitHub Pages with [Enforce HTTPS](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https#enforcing-https-for-your-github-pages-site) enabled. 
+:::
+
+## Including the URL in the Application
+
+We recommend setting the URL in the `server` portion of the Shiny app. For instance, we have: 
+
+```r
+server <- function(input, output, session) {
+  
+  data_url <- "https://tutorials.thecoatlessprofessor.com/r-shinylive-data-include/fruit-data.csv"
+
+  # Rest of application
+
+}
+```
+
+## Embedding the R Shinylive in Quarto 
+
+Embed the complete R Shinylive app into a `{shinylive-r}` code cell. Ensure to set `standalone: true` and consider adjusting the app height with `viewerHeight: 400`. For example, the standard cell would be:
+
+```{{shinylive-r}}
+#| standalone: true
+#| viewerHeight: 400
+## file: app.R
+library(shiny)
+
+# Rest of the app code
+```
+
+The full code for the example shown at the top of the document is: 
+
+```{{shinylive-r}}
+#| standalone: true
+#| viewerHeight: 400
+## file: app.R
+library(shiny)
+
+ui <- fluidPage(
+  titlePanel("Hello Shiny!"),
+  h3("Relative URL"),
+  verbatimTextOutput("urlText"),
+  h3("Downloaded Data by Relative URL"),
+  verbatimTextOutput("retrievedData")
+)
+
+server <- function(input, output, session) {
+  
+  data_url <- "https://tutorials.thecoatlessprofessor.com/r-shinylive-data-include/fruit-data.csv"
+  
+  output$urlText <- renderText({
+    data_url
+  })
+  
+  output$retrievedData <- renderText({
+    download.file(data_url, "fruit-data.csv")
+    read.csv("fruit-data.csv")
+  })
+  
+}
+
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)
+```
