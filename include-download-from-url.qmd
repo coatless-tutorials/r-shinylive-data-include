@@ -15,6 +15,7 @@ This example demonstrates how we can retrieve and load data from a URL into the 
 
 ```{shinylive-r}
 #| standalone: true
+#| components: [viewer, editor]
 #| viewerHeight: 400
 ## file: app.R
 library(shiny)
@@ -35,7 +36,7 @@ server <- function(input, output, session) {
     data_url
   })
   
-  output$retrievedData <- renderText({
+  output$retrievedData <- renderPrint({
     download.file(data_url, "fruit-data.csv")
     read.csv("fruit-data.csv")
   })
@@ -128,7 +129,7 @@ server <- function(input, output, session) {
     data_url
   })
   
-  output$retrievedData <- renderText({
+  output$retrievedData <- renderPrint({
     download.file(data_url, "fruit-data.csv")
     read.csv("fruit-data.csv")
   })
