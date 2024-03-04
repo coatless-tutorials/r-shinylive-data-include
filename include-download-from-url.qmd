@@ -15,7 +15,6 @@ This example demonstrates how we can retrieve and load data from a URL into the 
 
 ```{shinylive-r}
 #| standalone: true
-#| components: [viewer, editor]
 #| viewerHeight: 400
 ## file: app.R
 library(shiny)
