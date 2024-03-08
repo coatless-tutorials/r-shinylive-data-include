@@ -8,11 +8,21 @@ filters:
   - shinylive
 ---
 
+This R Shinylive app example demonstrates the process of embedding data directly into the application using the `## file:` directive.
+
+## Example App
+
+The following R Shinylive app is a demo of a Shiny app reading data from an embedded file (`fruit.csv`) in a code cell. To modify the data, navigate to the `fruit.csv` editor tab located to the right of `app.R` in the editor view.
+
+:::callout-note
+We've enabled the editor view to emphasize that the data is embedded within the app. Typically, R Shinylive applications only include the app running under the viewer view.
+:::
+
 ```{shinylive-r}
 #| standalone: true
 #| components: [editor, viewer]
 #| layout: vertical
-#| viewerHeight: 400
+#| viewerHeight: 300
 ## file: app.R
 library(shiny)
 
@@ -40,3 +50,120 @@ id,name,count
 3,"grape",100
 ```
 
+## The `file` Directive
+
+Inside a `{shinylive-r}` code cell, you can embed a text file using:
+
+```{{shinylive-r}}
+## file: my-file.txt
+contents here
+```
+
+To include data read by the app through a CSV, use:
+
+```{{shinylive-r}}
+## file: fruit.csv
+id,name,count
+1,"apple",20
+2,"orange",12
+3,"grape",100
+```
+
+:::callout-important
+R Shinylive apps currently do not support loading binary data. All file directives are considered to have the `type` declaration of `text`. For example:
+
+```{{shinylive-r}}
+## file: fruit.csv
+```
+
+will be treated as:
+
+```{{shinylive-r}}
+## file: fruit.csv
+## type: text
+```
+:::
+
+## Including Shiny App
+
+In the code cell, place all Shiny app code under the `## file: app.R` directive, like this:
+
+```{{shinylive-r}}
+#| standalone: true
+## file: app.R
+library(shiny)
+
+ui <- fluidPage(
+  # Shiny app UI source
+)
+
+server <- function(input, output) {
+  # Shiny app server source
+}
+
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)
+```
+
+Once done, include the data embedding in the same cell:
+
+```{{shinylive-r}}
+#| standalone: true
+## file: app.R
+
+# Shiny app code from above
+
+## file: fruit.csv
+id,name,count
+1,"apple",20
+```
+
+## Source of App
+
+View the full source of the app here:
+
+````md
+---
+title: "Embedded Data"
+format:
+  html:
+    resources: 
+      - shinylive-sw.js
+filters:
+  - shinylive
+---
+
+This is an R Shinylive code cell with embedded data!
+
+```{shinylive-r}
+#| standalone: true
+#| components: [editor, viewer]
+#| layout: vertical
+#| viewerHeight: 300
+## file: app.R
+library(shiny)
+
+ui <- fluidPage(
+  titlePanel("Hello Shiny!"),
+  verbatimTextOutput(outputId = "dataVariables")
+)
+
+server <- function(input, output) {
+
+  output$dataVariables <- renderPrint({
+      ds <- read.csv("fruit.csv")
+      ds
+  })
+
+}
+
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)
+
+## file: fruit.csv
+id,name,count
+1,"apple",20
+2,"orange",12
+3,"grape",100
+```
+````
